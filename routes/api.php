@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -35,3 +36,15 @@ Route::post('/students',[StudentController::class,'postStudents']);
 Route::put('/students/{id}',[StudentController::class,'putStudents']);
 // delete 
 Route::delete('/students/{id}',[StudentController::class,'deleteStudent']);
+// api/register
+Route::post('register', [AuthController::class, 'register']);
+// api/login
+Route::post('login', [AuthController::class,'authenticate']);
+
+Route::group(['middleware' => ['jwt.verify']], function() {
+    // api/logout
+    Route::get('logout', [AuthController::class, 'logout']);
+    // api/me
+    Route::get('me', [AuthController::class, 'get_user']);
+  
+});
